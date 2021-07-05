@@ -1,0 +1,172 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>backend_test.celery &#8212; backend_test 1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for backend_test.celery</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="kn">from</span> <span class="nn">.envtools</span> <span class="kn">import</span> <span class="n">getenv</span>
+
+
+<div class="viewcode-block" id="CelerySettings"><a class="viewcode-back" href="../../backend_test.html#backend_test.celery.CelerySettings">[docs]</a><span class="k">class</span> <span class="nc">CelerySettings</span><span class="p">:</span>
+    <span class="c1"># Settings for version 4.3.0</span>
+    <span class="c1"># see: https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html</span>
+    <span class="c1"># important note: config var names do not match perfectly with celery doc, keep that in mind.</span>
+    <span class="c1"># General settings</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#general-settings</span>
+    <span class="n">CELERY_ACCEPT_CONTENT</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span>
+    <span class="c1"># Time and date settings</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#time-and-date-settings</span>
+    <span class="n">CELERY_ENABLE_UTC</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">CELERY_TIMEZONE</span> <span class="o">=</span> <span class="s2">&quot;UTC&quot;</span>
+    <span class="c1"># Task settings</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#task-settings</span>
+    <span class="n">CELERY_TASK_SERIALIZER</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+    <span class="c1"># Task execution settings</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#task-execution-settings</span>
+    <span class="n">CELERY_ALWAYS_EAGER</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CELERY_ALWAYS_EAGER&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="n">coalesce</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">CELERY_EAGER_PROPAGATES_EXCEPTIONS</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span>
+        <span class="s2">&quot;CELERY_EAGER_PROPAGATES_EXCEPTIONS&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="n">coalesce</span><span class="o">=</span><span class="nb">bool</span>
+    <span class="p">)</span>
+    <span class="n">CELERY_IGNORE_RESULT</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CELERY_IGNORE_RESULT&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="n">coalesce</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">CELERY_STORE_ERRORS_EVEN_IF_IGNORED</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">CELERYD_TASK_TIME_LIMIT</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># hard time limit</span>
+    <span class="n">CELERYD_TASK_SOFT_TIME_LIMIT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">CELERYD_TASK_TIME_LIMIT</span> <span class="o">*</span> <span class="mf">0.85</span><span class="p">)</span>
+    <span class="n">CELERY_ACKS_LATE</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">CELERY_TASK_REJECT_ON_WORKER_LOST</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Task result backend settings</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#task-result-backend-settings</span>
+    <span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span>
+        <span class="s2">&quot;CELERY_RESULT_BACKEND_URL&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;redis://redis:6379/3&quot;</span>
+    <span class="p">)</span>
+    <span class="n">CELERY_RESULT_SERIALIZER</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+    <span class="n">CELERY_TASK_RESULT_EXPIRES</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span>
+    <span class="c1"># Message Routing</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#message-routing</span>
+    <span class="c1"># BROKER_TASK_QUEUE_HA_POLICY = []</span>
+    <span class="n">CELERY_DEFAULT_QUEUE</span> <span class="o">=</span> <span class="s2">&quot;celery&quot;</span>
+    <span class="n">CELERY_DEFAULT_EXCHANGE</span> <span class="o">=</span> <span class="n">CELERY_DEFAULT_QUEUE</span>
+    <span class="n">CELERY_DEFAULT_ROUTING_KEY</span> <span class="o">=</span> <span class="n">CELERY_DEFAULT_QUEUE</span>
+    <span class="c1"># Message Routing</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#broker-url</span>
+    <span class="n">BROKER_URL</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CELERY_BROKER_URL&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;redis://redis:6379/2&quot;</span><span class="p">)</span>
+    <span class="n">BROKER_POOL_LIMIT</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># default is 10</span>
+    <span class="n">BROKER_CONNECTION_MAX_RETRIES</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># default is 100, ask joe why 0</span>
+    <span class="n">BROKER_HEARTBEAT</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Worker</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#worker</span>
+    <span class="n">CELERYD_WORKER_LOST_WAIT</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="c1"># Logging</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#logging</span>
+    <span class="n">CELERYD_HIJACK_ROOT_LOGGER</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span>
+        <span class="s2">&quot;CELERYD_HIJACK_ROOT_LOGGER&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="n">coalesce</span><span class="o">=</span><span class="nb">bool</span>
+    <span class="p">)</span>
+    <span class="c1"># Custom Component Classes (advanced)</span>
+    <span class="c1"># https://docs.celeryproject.org/en/v4.3.0/userguide/configuration.html#custom-component-classes-advanced</span>
+    <span class="n">CELERYD_POOL_RESTARTS</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span class="p">,</span> <span class="s2">&quot;backend_test.settings&quot;</span><span class="p">)</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">CelerySettings</span><span class="p">()</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s2">&quot;backend_test&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">backend_test</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Donovan Vargas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>lunch.tests.test_models &#8212; backend_test 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for lunch.tests.test_models</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+
+<span class="kn">from</span> <span class="nn">employees.models</span> <span class="kn">import</span> <span class="n">Employee</span>
+<span class="kn">from</span> <span class="nn">lunch.models</span> <span class="kn">import</span> <span class="n">Menu</span><span class="p">,</span> <span class="n">MenuOptions</span><span class="p">,</span> <span class="n">Orders</span>
+
+
+<div class="viewcode-block" id="MenuTestCase"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase">[docs]</a><span class="k">class</span> <span class="nc">MenuTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test case for menu implements TestCase class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MenuTestCase.setUp"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setup Menu test case</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;123456&quot;</span><span class="p">,</span>
+                                        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">menu_user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;hi1&quot;</span><span class="p">,</span>
+                            <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+        <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">menu_user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu2&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;hi2&quot;</span><span class="p">,</span>
+                            <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="MenuTestCase.test_menu"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.test_menu">[docs]</a>    <span class="k">def</span> <span class="nf">test_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test menu name get&quot;&quot;&quot;</span>
+        <span class="n">menu1</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;hi1&quot;</span><span class="p">)</span>
+        <span class="n">menu2</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;hi2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">menu1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;menu1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">menu2</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;menu2&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuTestCase.test_uuid"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.test_uuid">[docs]</a>    <span class="k">def</span> <span class="nf">test_uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test menu unique id uuid field&quot;&quot;&quot;</span>
+        <span class="n">menu1</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">menu1</span><span class="o">.</span><span class="n">unique_id</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MenuTestCase.test_name_max_length"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.test_name_max_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_name_max_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test menu name max_length&quot;&quot;&quot;</span>
+        <span class="n">menu1</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">)</span>
+        <span class="n">max_length</span> <span class="o">=</span> <span class="n">menu1</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">max_length</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuTestCase.test_message_max_length"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.test_message_max_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_message_max_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test menu message max_length&quot;&quot;&quot;</span>
+        <span class="n">menu1</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">)</span>
+        <span class="n">max_length</span> <span class="o">=</span> <span class="n">menu1</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">max_length</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuTestCase.test_validate_date"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.test_validate_date">[docs]</a>    <span class="k">def</span> <span class="nf">test_validate_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test menu date&quot;&quot;&quot;</span>
+        <span class="n">menu1</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">menu1</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="MenuTestCase.test_sent"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuTestCase.test_sent">[docs]</a>    <span class="k">def</span> <span class="nf">test_sent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test menu sent&quot;&quot;&quot;</span>
+        <span class="n">menu1</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">menu1</span><span class="o">.</span><span class="n">sent</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">menu1</span><span class="o">.</span><span class="n">sent</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">menu1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">menu1</span><span class="o">.</span><span class="n">sent</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MenuOptionsTestCase"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuOptionsTestCase">[docs]</a><span class="k">class</span> <span class="nc">MenuOptionsTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test case for menu options implements TestCase class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MenuOptionsTestCase.setUp"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuOptionsTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setup Menu options test case</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;123456&quot;</span><span class="p">,</span>
+                                        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">menu_user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;menu1&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;hi1&quot;</span><span class="p">,</span>
+                                   <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+        <span class="n">MenuOptions</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">menu</span><span class="o">=</span><span class="n">menu</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s1">&#39;option2&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuOptionsTestCase.test_menu"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuOptionsTestCase.test_menu">[docs]</a>    <span class="k">def</span> <span class="nf">test_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Correct menu option get&quot;&quot;&quot;</span>
+        <span class="n">menu_option</span> <span class="o">=</span> <span class="n">MenuOptions</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;option2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">menu_option</span><span class="o">.</span><span class="n">option</span><span class="p">,</span> <span class="s1">&#39;option2&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuOptionsTestCase.test_name_max_length"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.MenuOptionsTestCase.test_name_max_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_name_max_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;menu option max_length test &quot;&quot;&quot;</span>
+        <span class="n">menu_option</span> <span class="o">=</span> <span class="n">MenuOptions</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;option2&quot;</span><span class="p">)</span>
+        <span class="n">max_length</span> <span class="o">=</span> <span class="n">menu_option</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;option&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">max_length</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="OrdersTestCase"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.OrdersTestCase">[docs]</a><span class="k">class</span> <span class="nc">OrdersTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test case for menu options implements TestCase class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OrdersTestCase.setUp"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.OrdersTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setup orders test case</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span>
+                                        <span class="n">email</span><span class="o">=</span><span class="s2">&quot;test@test.com&quot;</span><span class="p">)</span>
+        <span class="n">employee</span> <span class="o">=</span> <span class="n">Employee</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">employee</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">menu_user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;menu1&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;hi1&#39;</span><span class="p">,</span>
+                                   <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="n">MenuOptions</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">menu</span><span class="o">=</span><span class="n">menu</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s1">&#39;option2&#39;</span><span class="p">)</span>
+        <span class="n">Orders</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">employee</span><span class="o">=</span><span class="n">employee</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="p">,</span>
+                              <span class="n">customizations</span><span class="o">=</span><span class="s1">&#39;sin tomates&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OrdersTestCase.test_orders"><a class="viewcode-back" href="../../../lunch.tests.html#lunch.tests.test_models.OrdersTestCase.test_orders">[docs]</a>    <span class="k">def</span> <span class="nf">test_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Correct orders get&quot;&quot;&quot;</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="n">Orders</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">orders</span><span class="o">.</span><span class="n">customizations</span><span class="p">,</span> <span class="s1">&#39;sin tomates&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">backend_test</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Donovan Vargas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
